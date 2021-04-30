@@ -13,7 +13,7 @@ class LinkListTs<T> {
     this.head = null; //头结点为空
     this.equalsFn = equalsFn; //传入的判断当前节点的方法
   }
-  InsertElement(element: T) {
+  insertElement(element: T): void {
     //插入元素方法，插入元素为element
     let current: NodeTs<T> | null = null; //当前节点，默认为null
     const node = new NodeTs<T>(element); //创建新节点
@@ -30,7 +30,7 @@ class LinkListTs<T> {
     }
     this.count++; //链表长度+1
   }
-  getElement(index: number) {
+  getElement(index: number): NodeTs<T> | undefined | null {
     //传入需要节点的下标
     if (index >= 0 && index <= this.count) {
       let current: NodeTs<T> | null = this.head;
@@ -42,7 +42,7 @@ class LinkListTs<T> {
     }
     return undefined;
   }
-  removeElement(index: number) {
+  removeElement(index: number): T | undefined {
     //删除元素方法，传入元素下标
     if (index >= 0 && index < this.count) {
       let current: NodeTs<T> | null = this.head;
@@ -51,15 +51,21 @@ class LinkListTs<T> {
         this.head = current.next;
       } else {
         let previous: NodeTs<T> | undefined | null = this.getElement(index - 1); //找到当前元素的前一个
-        current = (previous as NodeTs<T>).next; //找到当前元素
-        (previous as NodeTs<T>).next = (current as NodeTs<T>).next; //删除当前元素
+        if (previous !== null && previous !== undefined) {
+          current = previous.next; //找到当前元素
+          if (current !== null) {
+            previous.next = current.next; //删除当前元素
+          }
+        }
       }
       this.count--; //链表长度-1
-      return (current as NodeTs<T>).element; //返回删除的元素
+      if (current !== null) {
+        return current.element;
+      } //返回删除的元素
     }
     return undefined;
   }
-  insertElementToPositon(element: T, index: number) {
+  insertElementToPositon(element: T, index: number): boolean {
     if (index >= 0 && index <= this.count) {
       const node: NodeTs<T> | null = new NodeTs<T>(element);
       if (index === 0) {
@@ -67,15 +73,17 @@ class LinkListTs<T> {
         this.head = node;
       } else {
         const previous = this.getElement(index - 1);
-        node.next = (previous as NodeTs<T>).next;
-        (previous as NodeTs<T>).next = node;
+        if (previous !== null && previous !== undefined) {
+          node.next = previous.next;
+          previous.next = node;
+        }
       }
       this.count++;
       return true;
     }
-    return undefined;
+    return false;
   }
-  indexOf(element: T) {
+  indexOf(element: T): number {
     let current: NodeTs<T> | null = this.head;
     for (let i = 0; i < this.count && current !== null; i++) {
       if (this.equalsFn(element, current.element)) {
@@ -102,11 +110,11 @@ const defaultEquals: EqualsFn<number> = (a, b) => {
   return a === b;
 };
 const linklistTs: LinkListTs<number> = new LinkListTs(defaultEquals); //创建对象，传入方法
-linklistTs.InsertElement(1);
-linklistTs.InsertElement(2);
-linklistTs.InsertElement(3);
-linklistTs.InsertElement(4);
-linklistTs.InsertElement(5);
+linklistTs.insertElement(1);
+linklistTs.insertElement(2);
+linklistTs.insertElement(3);
+linklistTs.insertElement(4);
+linklistTs.insertElement(5);
 console.log(linklistTs.count);
 console.log(linklistTs.getElement(4));
 console.log(linklistTs.removeElement(2));
