@@ -42,6 +42,49 @@ class LinkListTs<T> {
     }
     return undefined;
   }
+  removeElement(index: number) {
+    //删除元素方法，传入元素下标
+    if (index >= 0 && index < this.count) {
+      let current: NodeTs<T> | null = this.head;
+      if (index === 0 && current !== null) {
+        //如果删除头节点，那么就让头结点的下一个成为头结点
+        this.head = current.next;
+      } else {
+        let previous: NodeTs<T> | undefined | null = this.getElement(index - 1); //找到当前元素的前一个
+        current = (previous as NodeTs<T>).next; //找到当前元素
+        (previous as NodeTs<T>).next = (current as NodeTs<T>).next; //删除当前元素
+      }
+      this.count--; //链表长度-1
+      return (current as NodeTs<T>).element; //返回删除的元素
+    }
+    return undefined;
+  }
+  insertElementToPositon(element: T, index: number) {
+    if (index >= 0 && index <= this.count) {
+      const node: NodeTs<T> | null = new NodeTs<T>(element);
+      if (index === 0) {
+        node.next = this.head;
+        this.head = node;
+      } else {
+        const previous = this.getElement(index - 1);
+        node.next = (previous as NodeTs<T>).next;
+        (previous as NodeTs<T>).next = node;
+      }
+      this.count++;
+      return true;
+    }
+    return undefined;
+  }
+  indexOf(element: T) {
+    let current: NodeTs<T> | null = this.head;
+    for (let i = 0; i < this.count && current !== null; i++) {
+      if (this.equalsFn(element, current.element)) {
+        return i;
+      }
+      current = current.next;
+    }
+    return -1;
+  }
 }
 
 class NodeTs<T> {
@@ -60,5 +103,13 @@ const defaultEquals: EqualsFn<number> = (a, b) => {
 };
 const linklistTs: LinkListTs<number> = new LinkListTs(defaultEquals); //创建对象，传入方法
 linklistTs.InsertElement(1);
+linklistTs.InsertElement(2);
+linklistTs.InsertElement(3);
+linklistTs.InsertElement(4);
+linklistTs.InsertElement(5);
 console.log(linklistTs.count);
-console.log(linklistTs.getElement(0));
+console.log(linklistTs.getElement(4));
+console.log(linklistTs.removeElement(2));
+console.log(linklistTs.insertElementToPositon(8, 2));
+console.log(linklistTs.getElement(2));
+console.log(linklistTs.indexOf(8));
