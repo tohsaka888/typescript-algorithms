@@ -1,0 +1,1 @@
+import {LinkListTs} from "../linklistTs";

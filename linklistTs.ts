@@ -121,3 +121,5 @@ console.log(linklistTs.removeElement(2));
 console.log(linklistTs.insertElementToPositon(8, 2));
 console.log(linklistTs.getElement(2));
 console.log(linklistTs.indexOf(8));
+
+export { LinkListTs }
