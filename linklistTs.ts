@@ -1,5 +1,5 @@
 //用来在遍历过程中，判断当前节点是否是需要的节点，因为不确定具体类型，使用泛型
-interface EqualsFn<T> {
+type EqualsFn<T> = {
   (a: T, b: T): boolean;
 }
 
@@ -122,4 +122,5 @@ console.log(linklistTs.insertElementToPositon(8, 2));
 console.log(linklistTs.getElement(2));
 console.log(linklistTs.indexOf(8));
 
-export { LinkListTs }
+export { LinkListTs };
+export type { EqualsFn };
